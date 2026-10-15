@@ -30,4 +30,6 @@ In a working local setup, an open-weight model can let users keep receipt images
 
 ## Prize Categories
 
-Best Use of Gemma is the only category this project is intended to fit. Gemma 3 4B is the planned open-weight extraction model, but image inference failed in the tested build, so this prototype does not yet demonstrate a successful end-to-end Gemma receipt workflow. I am not claiming other partner categories based only on planning notes.
+- **Best Use of GitHub Copilot:** I used Copilot to build and refine the app. GitHub Actions runs compilation and an import smoke test on pushes and pull requests.
+- **Best Use of Render:** Render hosts the public dashboard and API on its free plan. It does not host the Gemma inference runtime; the demo shows that limitation and should only receive synthetic receipts.
+- **Best Use of Gemma:** Gemma 3 4B is the intended open-weight extraction model and was tested locally. Text prompts worked, but image inference failed with `unexpected EOF`, so this build does not yet demonstrate successful end-to-end receipt extraction.
