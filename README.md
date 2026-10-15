@@ -10,7 +10,7 @@ Why this exists
 Open-core idea
 - Built on open-weight models and open-source tooling.
 - Runs locally with Ollama and an open model such as Gemma 3.
-- Keeps each upload on the user's machine unless they explicitly choose cloud sync.
+- Stores uploads and job records locally by default; cloud sync is not currently implemented.
 - Can be swapped for a different model or fine-tuned for a niche workflow.
 
 This is a side hustle product with a real customer problem:
@@ -26,24 +26,26 @@ Why open innovation matters here
 - Compared with a closed AI API, this lets the business remain inexpensive, private, and resilient.
 
 What the app does
-- Accepts a receipt or invoice image or PDF preview
-- Uses a local open model to classify the document type and extract:
+- Accepts receipt and invoice images (JPG, PNG, or WebP) in the browser dashboard
+- Uses Gemma through a local Ollama server to classify the document and extract:
   - vendor name
   - invoice date
   - total amount
   - currency
   - line items
   - notes or categorization
-- Saves the extracted result to a local SQLite database
-- Exposes a simple API for a tiny web app or a desktop wrapper later
+- Saves extracted fields to a local SQLite database
+- Lets you review recent documents and extracted line items in the dashboard
+- Exposes the extraction and job-list APIs for other clients
 
 Current status
-- This repo contains a working FastAPI prototype and local-model integration pattern.
-- It is designed to run with a model served by Ollama.
-- It is intentionally small, useful, and easy to sell to a single niche customer.
+- The FastAPI service serves a browser dashboard and a small JSON API.
+- Receipt extraction uses a model served by Ollama; the app does not bundle model weights.
+- If Ollama or the configured model is unavailable, the app stores a placeholder result marked for review. Confirm the model status before relying on extracted fields.
+- The prototype still needs validation with real users and representative receipts before making accuracy or willingness-to-pay claims.
 
 Architecture
-- Frontend: optional future web app or desktop wrapper
+- Frontend: responsive browser dashboard served by FastAPI
 - API: FastAPI
 - AI runtime: open-weight model served by Ollama
 - Storage: SQLite by default, with room for MongoDB Atlas if a cloud-backed SaaS version is needed
@@ -78,7 +80,11 @@ ollama pull gemma3:4b
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-4) Upload a file
+Open `http://localhost:8000` and confirm the dashboard reports that the local model is ready. If you use Docker Compose, start the Ollama service with `docker compose up -d ollama`, then pull the model with `docker compose exec ollama ollama pull gemma3:4b`.
+
+The dashboard accepts JPG, PNG, and WebP images. The API is available at `/extract`, recent jobs at `/jobs`, model status at `/health`, and app metadata at `/api`.
+
+4) Upload a file via the API
 
 ```bash
 curl -X POST http://localhost:8000/extract \
