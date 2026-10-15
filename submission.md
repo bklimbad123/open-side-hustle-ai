@@ -1,45 +1,35 @@
-# Side Hustle Challenge Submission
+This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 2: Side Hustle](https://dev.to/challenges/hacktoberfest-week2-2026-10-12)
 
-## Form Fields
+## What I Built
 
-**Title**
+ReceiptLens is an early receipt-desk prototype for freelancers and independent workers who spend time turning receipts into bookkeeping records. It has a browser dashboard for uploading JPG, PNG, and WebP images, reviewing recent jobs, and inspecting extracted fields.
 
-ReceiptLens: A Local-First Receipt Desk Prototype
+The problem is real, but this prototype is not yet a validated product: I have not tested it with a freelancer or small-business owner, and I have no payment or willingness-to-pay results to report.
 
-**Tags**
+## Demo
 
-`#devchallenge` `#hf26challenge` `#gemma` `#opensource`
+The public demo is hosted on Render's free plan: [https://receiptlens-free.onrender.com](https://receiptlens-free.onrender.com).
 
-**Cover image**
+The free service hosts the dashboard and API, not Ollama or Gemma. The page reports the model unavailable, and uploads return a fallback marked for review. Uploaded files reach Render, so use synthetic receipts only; do not upload real financial documents. The free service also has ephemeral storage, so saved jobs may disappear after a restart.
 
-Use [the deployed dashboard screenshot](docs/submission-images/receiptlens-desktop.png). Crop it to the form's 1000:420 ratio if needed.
+![ReceiptLens on Render showing the model-unavailable notice and a synthetic receipt marked for review](https://raw.githubusercontent.com/bklimbad123/open-side-hustle-ai/main/docs/submission-images/receiptlens-desktop.png)
 
-**Cover video link**
+![Synthetic receipt used to check the deployment](https://raw.githubusercontent.com/bklimbad123/open-side-hustle-ai/main/docs/submission-images/synthetic-receipt-input.png)
 
-None. No video has been recorded.
+## Code
 
-## Post Body
+Source code: [github.com/bklimbad123/open-side-hustle-ai](https://github.com/bklimbad123/open-side-hustle-ai)
 
-Freelancers and independent workers often have to turn a pile of receipts into expense records before bookkeeping. Those documents can contain personal and financial details, so sending every image to a hosted AI service is not always a good fit.
+## How I Built It
 
-I built ReceiptLens, an early prototype with a browser dashboard for uploading JPG, PNG, and WebP images, reviewing recent jobs, and inspecting extracted fields. It uses FastAPI and SQLite, with Gemma 3 through Ollama as its intended open-weight extraction path.
+The dashboard and API use FastAPI, with SQLite for local job records. The intended extraction path sends receipt images to Gemma 3 4B through Ollama. In my Codespace, Gemma answered a text prompt, but image requests failed with `unexpected EOF`; ReceiptLens then returned its low-confidence fallback. The deployed free service has no model runtime, so its upload path is not a working AI extraction demo.
 
-Open innovation matters here because a local installation is designed to keep receipt images on the user's machine, avoid per-document hosted inference fees, and leave the model replaceable. These are design goals, not measured accuracy wins over closed models. In my Codespace test, Gemma 3 4B answered a text prompt, but image inference failed with `unexpected EOF`; the app returned a low-confidence fallback marked for review.
+## Why Does Open Innovation Matter?
 
-The public deployment is on Render's free plan: [receiptlens-free.onrender.com](https://receiptlens-free.onrender.com). It hosts the dashboard and API, but not Ollama or Gemma, so the page reports that the model is unavailable. Uploaded files reach the Render service; this public link is for synthetic receipts only. Do not upload real financial documents. Its free storage is also ephemeral, so saved jobs may disappear after a restart.
+In a working local setup, an open-weight model can let users keep receipt images on their own machine after downloading the model, avoid per-document hosted inference fees, and switch models as their needs change. These are design benefits, not measured accuracy wins over closed APIs. The local vision path still needs to be made reliable and tested. The public Render deployment is different: uploaded files reach Render, so it is only for synthetic data.
 
-I have not yet tested ReceiptLens with a freelancer or small-business owner, and I have no customer, payment, accuracy benchmark, or willingness-to-pay result to report. This is a prototype/build-in-progress entry, not a claim that receipt extraction works end to end. The next steps are to get Gemma vision inference working, test several synthetic receipts, and gather feedback from an intended user.
+## Prize Categories
 
-**Live prototype:** [https://receiptlens-free.onrender.com](https://receiptlens-free.onrender.com)
-
-**Source code:** [https://github.com/bklimbad123/open-side-hustle-ai](https://github.com/bklimbad123/open-side-hustle-ai)
-
-**Deployed dashboard:**
-
-![ReceiptLens deployed dashboard showing the model-unavailable notice and synthetic receipt marked for review](https://raw.githubusercontent.com/bklimbad123/open-side-hustle-ai/main/docs/submission-images/receiptlens-desktop.png)
-
-**Synthetic test receipt:**
-
-![Synthetic receipt used to check the public deployment](https://raw.githubusercontent.com/bklimbad123/open-side-hustle-ai/main/docs/submission-images/synthetic-receipt-input.png)
-
-Best Use of Gemma is a potential prize category if the vision path works in the submitted build. I am not claiming other partner categories based only on planning notes.
+- **Best Use of GitHub Copilot:** I used Copilot to build and refine the app. GitHub Actions runs compilation and an import smoke test on pushes and pull requests.
+- **Best Use of Render:** Render hosts the public dashboard and API on its free plan. It does not host the Gemma inference runtime; the demo shows that limitation and should only receive synthetic receipts.
+- **Best Use of Gemma:** Gemma 3 4B is the intended open-weight extraction model and was tested locally. Text prompts worked, but image inference failed with `unexpected EOF`, so this build does not yet demonstrate successful end-to-end receipt extraction.
