@@ -1,8 +1,9 @@
 import uuid
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 
 from app.ai import LocalAIExtractor
 from app.config import settings
@@ -16,8 +17,13 @@ extractor = LocalAIExtractor()
 storage = LocalStorage(settings.storage_path)
 
 
-@app.get("/")
-def home() -> dict[str, Any]:
+@app.get("/", response_class=FileResponse)
+def home() -> FileResponse:
+    return FileResponse(Path(__file__).parent / "static" / "index.html")
+
+
+@app.get("/api")
+def api_info() -> dict[str, Any]:
     return {
         "app": settings.app_name,
         "description": "Local-first invoice and receipt sorter powered by an open-weight model.",
