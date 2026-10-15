@@ -621,7 +621,7 @@
         const health = await response.json();
         if (health.ollama_available) {
           state.classList.add("ready");
-          label.textContent = `Local model ready: ${health.model}`;
+          label.textContent = `Model installed: ${health.model}`;
           alert.classList.remove("visible");
         } else {
           state.classList.remove("ready");

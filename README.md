@@ -80,7 +80,7 @@ ollama pull gemma3:4b
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Open `http://localhost:8000` and confirm the dashboard reports that the local model is ready. If you use Docker Compose, start the Ollama service with `docker compose up -d ollama`, then pull the model with `docker compose exec ollama ollama pull gemma3:4b`.
+Open `http://localhost:8000` and confirm the dashboard reports that the model is installed. Then process a synthetic receipt and verify the extracted fields before relying on the results. If you use Docker Compose, start the Ollama service with `docker compose up -d ollama`, then pull the model with `docker compose exec ollama ollama pull gemma3:4b`.
 
 The dashboard accepts JPG, PNG, and WebP images. The API is available at `/extract`, recent jobs at `/jobs`, model status at `/health`, and app metadata at `/api`.
 
