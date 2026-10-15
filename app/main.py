@@ -10,6 +10,9 @@ from app.config import settings
 from app.observability import initialize_sentry
 from app.storage import LocalStorage
 
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+
 initialize_sentry(settings.sentry_dsn)
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
@@ -42,8 +45,13 @@ def health() -> dict[str, Any]:
 async def extract_invoice(file: UploadFile = File(...)) -> JSONResponse:
     if not file.filename:
         raise HTTPException(status_code=400, detail="A file is required")
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=415, detail="Upload a JPG, PNG, or WebP image")
 
-    content = await file.read()
+    content = await file.read(MAX_UPLOAD_BYTES + 1)
+    if len(content) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="Image must be 10 MiB or smaller")
+
     result = extractor.extract(content, file.filename)
     job_id = str(uuid.uuid4())
     saved = storage.save_job(job_id, file.filename, result)

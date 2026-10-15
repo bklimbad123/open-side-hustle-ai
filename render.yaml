@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: receiptlens-free
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: APP_NAME
+        value: ReceiptLens
+      - key: OLLAMA_MODEL
+        value: gemma3:4b
+      - key: STORAGE_PATH
+        value: /tmp/receipts.db
