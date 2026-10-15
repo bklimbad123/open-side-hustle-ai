@@ -1,32 +1,23 @@
-# Side Hustle Challenge Submission Prep
+# Side Hustle Challenge Submission
 
 ## Readiness
 
-ReceiptLens has a local-first dashboard, a Gemma/Ollama extraction path, local SQLite storage, and CI. Do not submit it as fully validated until the following evidence is collected:
+ReceiptLens is a prototype, not yet a validated receipt-extraction product. On 2026-10-15, Gemma 3 4B was installed in the Codespace and answered a text-only prompt. Its Ollama vision runner failed on both image-generation and image-chat requests with `unexpected EOF`; the app then returned its low-confidence fallback instead of extracted receipt fields. Gemma 3 1B was also checked, but that Ollama model does not support images.
 
-- Run Gemma 3 4B locally and confirm `/health` reports `ollama_available: true`.
-- Process several non-sensitive or synthetic receipt images and manually check vendor, date, currency, total, and line items.
-- Show the workflow to at least one freelancer or small-business owner; record their feedback and whether they would pay. Do not imply a customer or sale if that has not happened.
-- Capture a short demo or screenshots showing the local model ready, upload, extracted fields, and review state.
-- Add links to the repository and demo in the final post. A DevRelay session link is optional.
-
-Current gaps: real Gemma extraction has not been verified in this Codespace, and user feedback and demo media have not been collected.
-Extraction quality has not been benchmarked against a closed model or a labeled receipt set; do not claim an accuracy advantage without that evidence.
+The dashboard, API upload path, SQLite job listing, and fallback behavior have passed mocked integration checks. Real image extraction, user feedback, demo media, measured accuracy, and willingness to pay have not been verified. Do not present this as a working AI receipt sorter or claim a customer result until those gaps are addressed.
 
 ## Draft Post
 
-### ReceiptLens: private receipt sorting for freelancers
+### ReceiptLens: a local-first receipt desk prototype
 
 Freelancers and independent workers often have to turn a pile of receipts into expense records before bookkeeping. Those documents can contain personal and financial details, so sending every image to a hosted AI service is not always a good fit.
 
-ReceiptLens is a small receipt desk: upload a receipt image, extract its vendor, date, currency, total, and line items, then review the result and save it locally. The extraction path uses Gemma served by Ollama; SQLite stores the resulting job records on the machine running the app.
+I built ReceiptLens, a prototype receipt desk with a browser dashboard for uploading JPG, PNG, and WebP images, reviewing recent jobs, and inspecting extracted fields and line items. The app uses FastAPI and stores job records in SQLite on the machine running it. Its intended AI path is Gemma 3 served locally through Ollama.
 
-Open innovation matters here because the open-weight model is the core of the workflow, not a label around a hosted API. With the default local Ollama configuration, inference can run without an internet connection after the model is downloaded, and receipt images do not need to leave the machine. This avoids per-document inference fees and lets the operator change the configured model. Those are architectural advantages, not yet measured accuracy wins over a closed model. The tradeoff is that users need compatible hardware and must review imperfect extraction results. If the model is unavailable, ReceiptLens labels its placeholder result for review rather than presenting it as successful AI extraction.
+Open innovation matters to this project because the goal is to keep sensitive receipt images on the user's machine, avoid per-document hosted inference fees, and retain the freedom to change models. Those are design advantages, not measured wins over a closed model. In my Codespace test, Gemma 3 4B answered text prompts, but its vision runner failed on receipt images with `unexpected EOF`; ReceiptLens correctly marked the resulting placeholder for review. So this is an honest prototype report, not a claim that receipt extraction is working end to end.
 
-The intended customer is a freelancer who regularly sorts reimbursable expenses. **Replace this paragraph with actual user feedback and a willingness-to-pay result after testing.** No paying customer or measured accuracy result is claimed yet.
+The intended customer is a freelancer who regularly sorts reimbursable expenses. I have not yet tested the prototype with a freelancer or small-business owner, so I do not know whether someone would pay for it. Customer interviews and a successful local vision run are the next validation steps.
 
-**Demo:** [Add a demo or screenshot link after capturing the verified local-model workflow.]
+**Source:** [ReceiptLens on GitHub](https://github.com/bklimbad123/open-side-hustle-ai)
 
-**Source:** [ReceiptLens repository](https://github.com/bklimbad123/open-side-hustle-ai)
-
-The best-fitting featured category is Best Use of Gemma. Avoid claiming other partner categories unless those technologies are used in the submitted demo, not just mentioned in planning notes.
+I have not recorded a demo or captured verified extraction results yet. I would submit this as a prototype/build-in-progress entry only; for a product-focused submission, first get Gemma image extraction working, test several synthetic or non-sensitive receipts, and include a short demo plus real user feedback. The best-fitting featured prize category is Best Use of Gemma; I am not claiming other partner categories based only on planning notes.
