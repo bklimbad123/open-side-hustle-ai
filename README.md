@@ -84,6 +84,10 @@ Open `http://localhost:8000` and confirm the dashboard reports that the model is
 
 The dashboard accepts JPG, PNG, and WebP images. The API is available at `/extract`, recent jobs at `/jobs`, model status at `/health`, and app metadata at `/api`.
 
+### Render free-plan deployment
+
+The `render.yaml` Blueprint deploys the dashboard and API on Render's free web-service plan. This does not host Ollama or Gemma, so the deployed dashboard reports the model unavailable and extraction returns a review-marked fallback until a working model endpoint is configured. The free service has ephemeral storage; do not rely on saved jobs surviving restarts. Use synthetic receipts only on the public deployment.
+
 4) Upload a file via the API
 
 ```bash
