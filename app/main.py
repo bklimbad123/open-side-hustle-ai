@@ -6,7 +6,10 @@ from fastapi.responses import JSONResponse
 
 from app.ai import LocalAIExtractor
 from app.config import settings
+from app.observability import initialize_sentry
 from app.storage import LocalStorage
+
+initialize_sentry(settings.sentry_dsn)
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
 extractor = LocalAIExtractor()
